@@ -83,6 +83,7 @@ BEGIN_MESSAGE_MAP(CWebsocketDebuggerDlg, CDialogEx)
 	ON_BN_CLICKED (IDOK, &CWebsocketDebuggerDlg::OnBnClickedOk)
 	ON_MESSAGE (WM_PUT_THREAD_MESSAGE, OnPutThreadMessage)
 	ON_WM_DESTROY ()
+	ON_NOTIFY (NM_DBLCLK, IDC_LIST_CUSTOMHEADERS, &CWebsocketDebuggerDlg::OnNMDblclkListCustomheaders)
 END_MESSAGE_MAP()
 
 BOOL CWebsocketDebuggerDlg::OnInitDialog()
@@ -186,6 +187,9 @@ void CWebsocketDebuggerDlg::OnDestroy ()
 	CDialogEx::OnDestroy ();
 
 	if (mWebsocket) {
+		if (mWebsocket->getIsRun ())
+			mWebsocket->close ();
+		stopThread ();
 		delete mWebsocket;
 	}
 }
@@ -235,6 +239,22 @@ void CWebsocketDebuggerDlg::OnBnClickedButtonCustomheadersRemove ()
 		if (mListControlCustomHeaders.GetItemState (i, LVIS_SELECTED) & LVIS_SELECTED)
 			mListControlCustomHeaders.DeleteItem (i);
 	}
+}
+
+void CWebsocketDebuggerDlg::OnNMDblclkListCustomheaders (NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+
+	if (pNMItemActivate->iItem >= 0) {
+		CDialogNewCustomHeader _dlg;
+		_dlg.SetModifyData (mListControlCustomHeaders.GetItemText (pNMItemActivate->iItem, 0), mListControlCustomHeaders.GetItemText (pNMItemActivate->iItem, 1));
+		if (_dlg.DoModal () == IDOK) {
+			mListControlCustomHeaders.SetItemText (pNMItemActivate->iItem, 0, _dlg.mEditValueCHKey.GetBuffer ());
+			mListControlCustomHeaders.SetItemText (pNMItemActivate->iItem, 1, _dlg.mEditValueCHValue.GetBuffer ());
+		}
+	}
+
+	*pResult = 0;
 }
 
 void CWebsocketDebuggerDlg::OnBnClickedOk ()

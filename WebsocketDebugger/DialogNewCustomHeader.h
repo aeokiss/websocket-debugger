@@ -19,6 +19,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedOk ();
+	void SetModifyData (CString key, CString value);
+
 	CString mEditValueCHKey;
 	CString mEditValueCHValue;
 	CEdit mEditControlCHKey;

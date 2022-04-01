@@ -36,6 +36,7 @@ protected:
 	afx_msg LRESULT OnPutThreadMessage (WPARAM wParam, LPARAM lParam);
 	afx_msg void OnBnClickedButtonCustomheadersAdd ();
 	afx_msg void OnBnClickedButtonCustomheadersRemove ();
+	afx_msg void OnNMDblclkListCustomheaders (NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedOk ();
 	afx_msg void OnDestroy ();
 	DECLARE_MESSAGE_MAP()

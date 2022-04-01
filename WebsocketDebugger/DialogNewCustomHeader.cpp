@@ -53,3 +53,9 @@ void CDialogNewCustomHeader::OnBnClickedOk ()
 
 	CDialogEx::OnOK ();
 }
+
+void CDialogNewCustomHeader::SetModifyData (CString key, CString value)
+{
+	mEditValueCHKey = key;
+	mEditValueCHValue = value;
+}
